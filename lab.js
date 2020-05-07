@@ -29,18 +29,19 @@ function playGame(e){
   if(temp == "Start"){
     btnToggle();
     startGame();
-  }
-  if(temp == "Play"){
     let tempRuns = document.querySelector("input").value;
     res.innerHTML = "";
     round= 0;
         for (let x = 0; x < tempRuns; x++) {
-           if(inplay){
+            while(deals[0].length>=1 && deals[1].length>=1){
+            if(deals[0].length>=1 && deals[1].length>=1){
+            if(inplay){
                 message.innerHTML = "Round "+ (x+1);
                 makeCards();
         } 
         }
-        
+    }
+    }   
   }
 }
 
@@ -57,11 +58,9 @@ function startGame(){
     dealCards(0);
     makeCards();
     document.querySelector("input").value ="1";
-    console.log(cards);
 
 }
 function showCard(el,card){
-    console.log(card);
     if (card!=undefined){
         el.style.backgroundColor = "white";
         let html1 = "";
@@ -78,7 +77,6 @@ function showCard(el,card){
         span2.classList.add("big");
         div.appendChild(span2);
         el.appendChild(div);
-        console.log(div);
  
     }
 }
@@ -93,6 +91,8 @@ function makeCards(){
     for (let x = 0; x < players.length; x++) {
         players[x].innerHTML = "";
         let card = deals[x].shift();
+
+
         if (curWinner.high == card.value) {
             console.log("tie");
             if(playoff.length == 0){
@@ -117,7 +117,7 @@ function makeCards(){
 
         tempHolder.push(card);
         showCard(players[x],card);
-        
+        console.log(deals);  
     }
     console.log(curWinner);
     console.log(tempHolder);
@@ -127,11 +127,9 @@ function makeCards(){
 
 function upddater(winner,tempHolder){
 
-    console.log(tempHolder);
     tempHolder.sort(function(){
         return .5-Math.random();
     })
-    console.log(tempHolder);
 
     for (let record of tempHolder){
         deals[winner].push(record);   
@@ -141,21 +139,20 @@ function upddater(winner,tempHolder){
         div.classList.add("stats");
         div.innerHTML= deals[x].length<1 ? "Lost": "Cards: " + (deals[x].length);
         players[x].appendChild(div);
+        console.log(deals[1].length)
     }
-
+    
     res.innerHTML += "Player "+(winner+1)+ " won "+ tempHolder.length+ " cards.<br>";
 }
 
 function dealCards(playerCard){
     playerCard = (playerCard>= players.length)? 0 : playerCard;
-    console.log(playerCard);
     if(cards.length>0){
         let randIndex = Math.floor(Math.random()*cards.length);
         let card = cards.splice(randIndex,1)[0];
         deals[playerCard].push(card);
         playerCard++;
         return dealCards(playerCard);
-        console.log(deals);
 
 
     }else{
@@ -179,10 +176,7 @@ function setupPlayers(num){
     div.appendChild(div1);
     div.appendChild(players[x]);
     gameplay.appendChild(div);
-    deals.push([]);
-    console.log(deals);
-    console.log(div);
-        
+    deals.push([]);    
     }
 }
 
